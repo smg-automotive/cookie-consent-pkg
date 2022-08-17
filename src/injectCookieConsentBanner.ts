@@ -27,8 +27,7 @@ export const injectCookieConsentBanner = ({
   domainScript,
   onConsentChanged,
 }: CookieConsentSettings) => {
-  if (typeof window === 'undefined') return;
-  if (!window.document) return undefined;
+  if (typeof window === 'undefined' || !window.document) return;
   return new Promise((resolve, reject) => {
     const script = window.document.createElement('script');
     script.src = src;
