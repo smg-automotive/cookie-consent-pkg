@@ -1,14 +1,9 @@
 import {
+  Category,
   CookieConsentSettings,
   injectCookieConsentBanner,
 } from './injectCookieConsentBanner';
-import { Category } from './types/category';
 
-const openCookieSettings = () => {};
+//const openCookieSettings = () => {};
 
-export {
-  injectCookieConsentBanner,
-  openCookieSettings,
-  CookieConsentSettings,
-  Category,
-};
+export { injectCookieConsentBanner, CookieConsentSettings, Category };

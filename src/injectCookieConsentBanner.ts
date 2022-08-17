@@ -1,5 +1,3 @@
-import { Category } from './types/category';
-
 declare global {
   interface Window {
     OptanonWrapper?: () => void;
@@ -8,6 +6,14 @@ declare global {
       OnConsentChanged?: (callback: (event: CustomEvent) => void) => void;
     };
   }
+}
+
+export enum Category {
+  'StrictlyNecessaryCookies' = 'C0001',
+  'PerformanceCookies' = 'C0002',
+  'FunctionalCookies' = 'C0003',
+  'TargetingCookies' = 'C0004',
+  'SocialMediaCookies' = 'C0005',
 }
 
 export interface CookieConsentSettings {
