@@ -1,4 +1,4 @@
-declare global {
+/*declare global {
   interface Window {
     OptanonWrapper?: () => void;
     dataLayer: Record<string, unknown>[];
@@ -6,7 +6,7 @@ declare global {
       OnConsentChanged?: (callback: (event: CustomEvent) => void) => void;
     };
   }
-}
+}*/
 
 export enum Category {
   'StrictlyNecessaryCookies' = 'C0001',
@@ -28,6 +28,14 @@ export const injectCookieConsentBanner = ({
   onConsentChanged,
 }: CookieConsentSettings) => {
   if (typeof window === 'undefined' || !window.document) return;
+  const globalWindow = window as Window &
+    typeof global & {
+      OptanonWrapper?: () => void;
+      dataLayer: Record<string, unknown>[];
+      Optanon?: {
+        OnConsentChanged?: (callback: (event: CustomEvent) => void) => void;
+      };
+    };
   return new Promise((resolve, reject) => {
     const script = window.document.createElement('script');
     script.src = src;
@@ -45,13 +53,13 @@ export const injectCookieConsentBanner = ({
 
     window.document.body.appendChild(optanonFunction);
 
-    window.OptanonWrapper = () => {
-      const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
+    globalWindow.OptanonWrapper = () => {
+      const OneTrustOnConsentChanged = globalWindow?.Optanon?.OnConsentChanged;
       if (OneTrustOnConsentChanged) {
         OneTrustOnConsentChanged((event) => {
           const activeGroups = event.detail || [];
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
+          globalWindow.dataLayer = globalWindow.dataLayer || [];
+          globalWindow.dataLayer.push({
             event: 'ConsentUpdated',
             activeGroups: activeGroups.join(','),
           });
