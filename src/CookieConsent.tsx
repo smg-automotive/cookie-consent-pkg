@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 
 import { Category } from './category';
@@ -38,6 +39,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
 
   React.useEffect(() => {
     if (enabled) {
+      // es
       // @ts-ignore
       window.OptanonWrapper = () => {
         // @ts-ignore
