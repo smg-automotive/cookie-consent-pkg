@@ -53,7 +53,7 @@ function renderOneTrustScript(
   src: string,
   domainScript: string,
   resolve: (value?: PromiseLike<unknown> | unknown) => void,
-  reject: (reason?: any) => void
+  reject: (reason?: unknown) => void
 ) {
   // TODO: FYI, I used vanilla JS so that it's sharable independent of the framework in a pkg
   const script = global.document.createElement('script');
