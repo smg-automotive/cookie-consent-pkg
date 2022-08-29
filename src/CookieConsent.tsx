@@ -1,10 +1,4 @@
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useEffect,
-  useState,
-} from 'react';
+import * as React from 'react';
 
 import { Category } from './category';
 
@@ -27,7 +21,7 @@ type Context = {
   openPreferenceCenter?: () => void;
 };
 
-const CookieConsentContext = createContext<Context>({
+const CookieConsentContext = React.createContext<Context>({
   currentConsent: [],
   openPreferenceCenter: undefined,
 });
@@ -36,17 +30,20 @@ type Props = {
   enabled: boolean;
 };
 
-const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
+const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   enabled,
   children,
 }) => {
-  const [currentConsent, setCurrentConsent] = useState<Category[]>([]);
+  const [currentConsent, setCurrentConsent] = React.useState<Category[]>([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (enabled) {
+      // @ts-ignore
       window.OptanonWrapper = () => {
+        // @ts-ignore
         const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
         if (OneTrustOnConsentChanged) {
+          // @ts-ignore
           OneTrustOnConsentChanged((event) => {
             const activeGroups = event.detail || [];
             setCurrentConsent(activeGroups);
@@ -58,15 +55,17 @@ const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
     }
   }, [enabled]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setCurrentConsent((prevConsent) =>
       prevConsent.length
         ? prevConsent
-        : (window.OnetrustActiveGroups.split(',') as Category[])
+        : // @ts-ignore
+          (window.OnetrustActiveGroups.split(',') as Category[])
     );
   }, []);
 
   const openPreferenceCenter = () => {
+    // @ts-ignore
     window.OneTrust?.ToggleInfoDisplay();
   };
 
