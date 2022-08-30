@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 
 import { Category } from './category';
 
-/*declare global {
+declare global {
   interface Window {
     OptanonWrapper?: () => void;
     Optanon?: {
@@ -15,7 +14,7 @@ import { Category } from './category';
     };
     OnetrustActiveGroups: string;
   }
-}*/
+}
 
 type Context = {
   currentConsent: Category[];
@@ -39,13 +38,9 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
 
   React.useEffect(() => {
     if (enabled) {
-      // es
-      // @ts-ignore
       window.OptanonWrapper = () => {
-        // @ts-ignore
         const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
         if (OneTrustOnConsentChanged) {
-          // @ts-ignore
           OneTrustOnConsentChanged((event) => {
             const activeGroups = event.detail || [];
             setCurrentConsent(activeGroups);
@@ -61,13 +56,11 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     setCurrentConsent((prevConsent) =>
       prevConsent.length
         ? prevConsent
-        : // @ts-ignore
-          (window.OnetrustActiveGroups.split(',') as Category[])
+        : (window.OnetrustActiveGroups.split(',') as Category[])
     );
   }, []);
 
   const openPreferenceCenter = () => {
-    // @ts-ignore
     window.OneTrust?.ToggleInfoDisplay();
   };
 
