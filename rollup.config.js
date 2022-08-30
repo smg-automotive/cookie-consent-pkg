@@ -26,8 +26,13 @@ export default [
       resolve(),
       commonjs(),
       typescript({ tsconfig: './tsconfig.build.json' }),
-      dts(),
+      //dts(),
     ],
     external: ['react', 'react-dom'],
+  },
+  {
+    input: 'dist/esm/types/index.d.ts',
+    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+    plugins: [dts()],
   },
 ];
