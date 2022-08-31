@@ -7,7 +7,6 @@ declare global {
     OptanonWrapper?: () => void;
     Optanon?: {
       OnConsentChanged?: (callback: (event: CustomEvent) => void) => void;
-      Init?: (callback: (event: CustomEvent) => void) => void;
     };
     OneTrust: {
       ToggleInfoDisplay: () => void;

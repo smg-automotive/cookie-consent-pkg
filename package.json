@@ -30,7 +30,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "13.3.0",
-    "@rollup/plugin-typescript": "8.3.3",
+    "@rollup/plugin-typescript": "8.3.4",
     "@smg-automotive/eslint-config": "2.0.16",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.3.0",
