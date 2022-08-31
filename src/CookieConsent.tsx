@@ -18,11 +18,13 @@ declare global {
 
 type Context = {
   currentConsent: Category[];
+  isOneTrustLoaded: boolean;
   openPreferenceCenter?: () => void;
 };
 
 const CookieConsentContext = React.createContext<Context>({
   currentConsent: [],
+  isOneTrustLoaded: false,
   openPreferenceCenter: undefined,
 });
 
@@ -35,7 +37,15 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   children,
 }) => {
   const [currentConsent, setCurrentConsent] = React.useState<Category[]>([]);
-  const [isInitialConsentSet, setIsInitialConsentSet] = React.useState(false);
+  const [isOneTrustLoaded, setIsOneTrustLoaded] = React.useState(false);
+
+  const setInitialConsent = () => {
+    setCurrentConsent((prevConsent) =>
+      prevConsent.length
+        ? prevConsent
+        : (window.OnetrustActiveGroups?.split(',') as Category[])
+    );
+  };
 
   React.useEffect(() => {
     if (enabled) {
@@ -47,22 +57,14 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
             setCurrentConsent(activeGroups);
           });
         }
+
+        setInitialConsent();
+        setIsOneTrustLoaded(true);
       };
     } else {
       setCurrentConsent([Category.StrictlyNecessaryCookies]);
     }
   }, [enabled]);
-
-  React.useEffect(() => {
-    if (!isInitialConsentSet) {
-      setCurrentConsent((prevConsent) =>
-        prevConsent.length
-          ? prevConsent
-          : (window.OnetrustActiveGroups?.split(',') as Category[])
-      );
-      setIsInitialConsentSet(true);
-    }
-  }, [window.OnetrustActiveGroups, isInitialConsentSet]);
 
   const openPreferenceCenter = () => {
     window.OneTrust?.ToggleInfoDisplay();
@@ -70,7 +72,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <CookieConsentContext.Provider
-      value={{ currentConsent, openPreferenceCenter }}
+      value={{ currentConsent, openPreferenceCenter, isOneTrustLoaded }}
     >
       {children}
     </CookieConsentContext.Provider>
