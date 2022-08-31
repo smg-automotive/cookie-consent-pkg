@@ -19,13 +19,14 @@ declare global {
 type Context = {
   currentConsent: Category[];
   isOneTrustLoaded: boolean;
-  openPreferenceCenter?: () => void;
+  openPreferenceCenter: () => void;
 };
 
 const CookieConsentContext = React.createContext<Context>({
   currentConsent: [],
   isOneTrustLoaded: false,
-  openPreferenceCenter: undefined,
+  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+  openPreferenceCenter: () => {},
 });
 
 type Props = {
