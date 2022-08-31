@@ -14,7 +14,7 @@ npm install @smg-automotive/cookie-consent-pkg
 ````tsx
 import {OneTrustCookieConsentBanner} from '@smg-automotive/cookie-consent-pkg';
 
-<OneTrustCookieConsentBanner domainScript="yourScriptID"/>
+<OneTrustCookieConsentBanner domainScript="yourScriptID" enabled={true}/>
 ````
 
 `OneTrustCookieConsentBanner` adds the required script tags to the document head and preloads the script so that it

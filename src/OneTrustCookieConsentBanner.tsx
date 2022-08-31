@@ -3,9 +3,13 @@ import { useEffect } from 'react';
 
 type Props = {
   domainScript: string;
+  enabled: boolean;
 };
 
-const OneTrustCookieConsentBanner: React.FC<Props> = ({ domainScript }) => {
+const OneTrustCookieConsentBanner: React.FC<Props> = ({
+  domainScript,
+  enabled,
+}) => {
   const src = 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js';
 
   const loadOneTrust = () => {
@@ -24,7 +28,7 @@ const OneTrustCookieConsentBanner: React.FC<Props> = ({ domainScript }) => {
   };
 
   useEffect(() => {
-    if (document) {
+    if (document && enabled) {
       loadOneTrust();
     }
   }, []);
