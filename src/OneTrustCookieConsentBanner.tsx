@@ -1,3 +1,5 @@
+/* eslint-disable-next-line import/no-internal-modules */
+import { renderToString } from 'react-dom/server';
 import * as React from 'react';
 
 type Props = {
@@ -35,4 +37,8 @@ const OneTrustCookieConsentBanner: React.FC<Props> = ({ domainScript }) => {
   );
 };
 
+const OneTrustCookieConsentBannerAsString = (props: Props) =>
+  renderToString(<OneTrustCookieConsentBanner {...props} />);
+
 export default OneTrustCookieConsentBanner;
+export { OneTrustCookieConsentBannerAsString };
