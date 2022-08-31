@@ -56,7 +56,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     setCurrentConsent((prevConsent) =>
       prevConsent.length
         ? prevConsent
-        : (window.OnetrustActiveGroups.split(',') as Category[])
+        : (window.OnetrustActiveGroups?.split(',') as Category[])
     );
   }, []);
 
