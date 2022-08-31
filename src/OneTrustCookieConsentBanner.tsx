@@ -1,15 +1,11 @@
-import * as React from 'react';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 
 type Props = {
   domainScript: string;
   enabled: boolean;
 };
 
-const OneTrustCookieConsentBanner: React.FC<Props> = ({
-  domainScript,
-  enabled,
-}) => {
+const OneTrustCookieConsentBanner: FC<Props> = ({ domainScript, enabled }) => {
   const src = 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js';
 
   const loadOneTrust = () => {

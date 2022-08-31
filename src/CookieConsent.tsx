@@ -1,4 +1,10 @@
-import * as React from 'react';
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from 'react';
 
 import { Category } from './category';
 
@@ -21,7 +27,7 @@ type Context = {
   openPreferenceCenter: () => void;
 };
 
-const CookieConsentContext = React.createContext<Context>({
+const CookieConsentContext = createContext<Context>({
   currentConsent: [],
   isOneTrustLoaded: false,
   /* eslint-disable-next-line @typescript-eslint/no-empty-function */
@@ -33,13 +39,13 @@ type Props = {
   onConsentChanged?: (newConsent: Category[]) => void;
 };
 
-const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
+const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
   enabled,
   onConsentChanged,
   children,
 }) => {
-  const [currentConsent, setCurrentConsent] = React.useState<Category[]>([]);
-  const [isOneTrustLoaded, setIsOneTrustLoaded] = React.useState(false);
+  const [currentConsent, setCurrentConsent] = useState<Category[]>([]);
+  const [isOneTrustLoaded, setIsOneTrustLoaded] = useState(false);
 
   const setInitialConsent = () => {
     setCurrentConsent((prevConsent) =>
@@ -51,7 +57,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     );
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (enabled) {
       window.OptanonWrapper = () => {
         const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
