@@ -11,6 +11,26 @@ npm install @smg-automotive/cookie-consent-pkg
 
 ### Loading OneTrust banner
 
+````tsx
+import {OneTrustCookieConsentBanner} from '@smg-automotive/cookie-consent-pkg';
+
+<OneTrustCookieConsentBanner domainScript="yourScriptID"/>
+````
+
+`OneTrustCookieConsentBanner` adds the required script tags to the document head and preloads the script so that it
+loads as early as possible. Alternatively, if you are in a Next.js environment, you can add the following to the _
+document.tsx component:
+
+````tsx
+import Script from 'next/script';
+
+<Script
+    src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
+    data-domain-script="yourScriptID"
+    strategy="beforeInteractive"
+/>
+````
+
 ### CookieConsentProvider
 
 You should wrap your application with the `CookieConsentProvider`. It places listeners on the current cookie consent and
