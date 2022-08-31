@@ -35,6 +35,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   children,
 }) => {
   const [currentConsent, setCurrentConsent] = React.useState<Category[]>([]);
+  const [isInitialConsentSet, setIsInitialConsentSet] = React.useState(false);
 
   React.useEffect(() => {
     if (enabled) {
@@ -53,12 +54,15 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   }, [enabled]);
 
   React.useEffect(() => {
-    setCurrentConsent((prevConsent) =>
-      prevConsent.length
-        ? prevConsent
-        : (window.OnetrustActiveGroups?.split(',') as Category[])
-    );
-  }, []);
+    if (!isInitialConsentSet) {
+      setCurrentConsent((prevConsent) =>
+        prevConsent.length
+          ? prevConsent
+          : (window.OnetrustActiveGroups?.split(',') as Category[])
+      );
+      setIsInitialConsentSet(true);
+    }
+  }, [window.OnetrustActiveGroups, isInitialConsentSet]);
 
   const openPreferenceCenter = () => {
     window.OneTrust?.ToggleInfoDisplay();
