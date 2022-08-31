@@ -30,10 +30,12 @@ const CookieConsentContext = React.createContext<Context>({
 
 type Props = {
   enabled: boolean;
+  onConsentChanged?: (newConsent: Category[]) => void;
 };
 
 const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   enabled,
+  onConsentChanged,
   children,
 }) => {
   const [currentConsent, setCurrentConsent] = React.useState<Category[]>([]);
@@ -43,7 +45,9 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     setCurrentConsent((prevConsent) =>
       prevConsent.length
         ? prevConsent
-        : (window.OnetrustActiveGroups?.split(',') as Category[])
+        : (window.OnetrustActiveGroups?.split(',') as Category[]).filter(
+            Boolean
+          )
     );
   };
 
@@ -54,6 +58,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
         if (OneTrustOnConsentChanged) {
           OneTrustOnConsentChanged((event) => {
             const activeGroups = event.detail || [];
+            onConsentChanged && onConsentChanged(activeGroups);
             setCurrentConsent(activeGroups);
           });
         }

@@ -4,16 +4,54 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Usage
+
 ```
 npm install @smg-automotive/cookie-consent-pkg
 ```
 
+### Loading OneTrust banner
+
+### CookieConsentProvider
+
+You should wrap your application with the `CookieConsentProvider`. It places listeners on the current cookie consent and
+enables you to react on changes (e.g. block certain third party scripts).
+
+```tsx
+<CookieConsentProvider
+    enabled={true}
+    onConsentChanged={(newConsent) => console.log(newConsent)}
+>
+    <div>your app..</div>
+</CookieConsentProvider>
+```
+
+`onConsentChanged` is optional and allows you to fire events when the user changed the consent in the preference center.
+
+### CookieConsentContext
+
+You can get the current consent and other properties related to cookie consent in your component
+using `CookieConsentContext`.
+
+````tsx
+import {CookieConsentContext} from '@smg-automotive/cookie-consent-pkg';
+
+const {currentConsent, openPreferenceCenter, isOneTrustLoaded} = useContext(CookieConsentContext);
+````
+
+| property             | type       | description                                                                                                                                           |
+|----------------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| currentConsent       | Category[] | Array of the current consent. If the user uses a script blocker or you disabled OneTrust in the Provider, only the stricly necessary category is set. |
+| openPreferenceCenter | Function   | Opens the OneTrust preference center.                                                                                                                 |
+| isOneTrustLoaded     | boolean    | True if OneTrust has been successfully loaded and invoked.                                                                                            |
+
 ## Development
+
 ```
 npm run build
 ```
 
 You can link your local npm package to integrate it with any local project:
+
 ```
 cd cookie-consent-pkg
 npm run build
@@ -25,4 +63,6 @@ npm link ../cookie-consent-pkg
 ## Release a new version
 
 New versions are released on the ci using semantic-release as soon as you merge into master. Please
-make sure your merge commit message adheres to the corresponding [conventions](https://www.conventionalcommits.org/en/v1.0.0/) and your branch name does not contain forward slashes `/`.
+make sure your merge commit message adheres to the
+corresponding [conventions](https://www.conventionalcommits.org/en/v1.0.0/) and your branch name does not contain
+forward slashes `/`.
