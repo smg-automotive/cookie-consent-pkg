@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from 'react';
+import * as React from 'react';
 import { act, renderHook } from '@testing-library/react';
 
 import { CookieConsentContext, CookieConsentProvider } from '../CookieConsent';
@@ -11,7 +11,7 @@ const wrapper = ({
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
 }) => {
-  const Wrapper = ({ children }: { children: ReactNode }) => (
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <CookieConsentProvider
       enabled={enabled}
       onConsentChanged={onConsentChanged}
@@ -28,9 +28,12 @@ describe('CookieConsent', () => {
   });
 
   it('sets the consent to strictly necessary if OneTrust is disabled', () => {
-    const { result } = renderHook(() => useContext(CookieConsentContext), {
-      wrapper: wrapper({ enabled: false }),
-    });
+    const { result } = renderHook(
+      () => React.useContext(CookieConsentContext),
+      {
+        wrapper: wrapper({ enabled: false }),
+      }
+    );
     expect(result.current.consent).toEqual([Category.StrictlyNecessaryCookies]);
     expect(result.current.isLoaded).toEqual(false);
   });
@@ -40,7 +43,7 @@ describe('CookieConsent', () => {
     /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     window.OptanonWrapper = function () {};
     const { result, rerender } = renderHook(
-      () => useContext(CookieConsentContext),
+      () => React.useContext(CookieConsentContext),
       {
         wrapper: wrapper({ enabled: true }),
       }
@@ -61,7 +64,7 @@ describe('CookieConsent', () => {
   it('changes the consent if the user uses the preference center', () => {
     const onChange = jest.fn();
     const { result, rerender } = renderHook(
-      () => useContext(CookieConsentContext),
+      () => React.useContext(CookieConsentContext),
       {
         wrapper: wrapper({ enabled: true, onConsentChanged: onChange }),
       }
@@ -91,9 +94,12 @@ describe('CookieConsent', () => {
   it('opens the OneTrust preference center', () => {
     const openPreferenceCenter = jest.fn();
     window.OneTrust = { ToggleInfoDisplay: openPreferenceCenter };
-    const { result } = renderHook(() => useContext(CookieConsentContext), {
-      wrapper: wrapper({ enabled: true }),
-    });
+    const { result } = renderHook(
+      () => React.useContext(CookieConsentContext),
+      {
+        wrapper: wrapper({ enabled: true }),
+      }
+    );
     result.current.openPreferenceCenter();
     expect(openPreferenceCenter).toHaveBeenCalled();
   });

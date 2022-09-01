@@ -1,11 +1,4 @@
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import * as React from 'react';
 
 import { Category } from './category';
 
@@ -28,7 +21,7 @@ type Context = {
   openPreferenceCenter: () => void;
 };
 
-const CookieConsentContext = createContext<Context>({
+const CookieConsentContext = React.createContext<Context>({
   consent: [],
   isLoaded: false,
   openPreferenceCenter: () => null,
@@ -44,17 +37,17 @@ type OneTrust = {
   isLoaded: boolean;
 };
 
-const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
+const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   enabled,
   onConsentChanged,
   children,
 }) => {
-  const [oneTrust, setOneTrust] = useState<OneTrust>({
+  const [oneTrust, setOneTrust] = React.useState<OneTrust>({
     consent: [Category.StrictlyNecessaryCookies],
     isLoaded: false,
   });
 
-  const setInitialConsent = useCallback(() => {
+  const setInitialConsent = React.useCallback(() => {
     setOneTrust((prevOneTrust) => {
       if (prevOneTrust.isLoaded) return prevOneTrust;
 
@@ -71,7 +64,7 @@ const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
     });
   }, []);
 
-  const optanonWrapper = useCallback(() => {
+  const optanonWrapper = React.useCallback(() => {
     const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
     if (OneTrustOnConsentChanged) {
       OneTrustOnConsentChanged((event) => {
@@ -82,7 +75,7 @@ const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
     }
   }, [onConsentChanged]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!enabled) return;
     window.OptanonWrapper = optanonWrapper;
     setInitialConsent();
