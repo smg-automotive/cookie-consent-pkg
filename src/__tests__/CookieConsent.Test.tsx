@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import { act, renderHook } from '@testing-library/react';
 
 import { CookieConsentContext, CookieConsentProvider } from '../CookieConsent';
@@ -11,7 +11,7 @@ const wrapper = ({
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
 }) => {
-  return ({ children }: { children: React.ReactNode }) => (
+  const Wrapper = ({ children }: { children: ReactNode }) => (
     <CookieConsentProvider
       enabled={enabled}
       onConsentChanged={onConsentChanged}
@@ -19,17 +19,20 @@ const wrapper = ({
       {children}
     </CookieConsentProvider>
   );
+  return Wrapper;
 };
 
 describe('CookieConsent', () => {
+  afterEach(() => {
+    window.OnetrustActiveGroups = '';
+  });
+
   it('sets the consent to strictly necessary if OneTrust is disabled', () => {
     const { result } = renderHook(() => useContext(CookieConsentContext), {
       wrapper: wrapper({ enabled: false }),
     });
-    expect(result.current.currentConsent).toEqual([
-      Category.StrictlyNecessaryCookies,
-    ]);
-    expect(result.current.isOneTrustLoaded).toEqual(false);
+    expect(result.current.consent).toEqual([Category.StrictlyNecessaryCookies]);
+    expect(result.current.isLoaded).toEqual(false);
   });
 
   it('sets the initial consent on load', () => {
@@ -48,11 +51,41 @@ describe('CookieConsent', () => {
     });
 
     rerender();
-    expect(result.current.currentConsent).toEqual([
+    expect(result.current.consent).toEqual([
       Category.PerformanceCookies,
       Category.FunctionalCookies,
     ]);
-    expect(result.current.isOneTrustLoaded).toEqual(true);
+    expect(result.current.isLoaded).toEqual(true);
+  });
+
+  it('changes the consent if the user uses the preference center', () => {
+    const onChange = jest.fn();
+    const { result, rerender } = renderHook(
+      () => useContext(CookieConsentContext),
+      {
+        wrapper: wrapper({ enabled: true, onConsentChanged: onChange }),
+      }
+    );
+
+    // simulate OneTrustLoaded
+    act(() => {
+      (window.OptanonWrapper as () => void)();
+    });
+    rerender();
+    expect(result.current.isLoaded).toEqual(true);
+    expect(result.current.consent).toEqual([Category.StrictlyNecessaryCookies]);
+
+    act(() => {
+      window.Optanon = {
+        OnConsentChanged: (handler: (event: CustomEvent) => void) => {
+          handler({ detail: [Category.PerformanceCookies] } as CustomEvent);
+        },
+      };
+      (window.OptanonWrapper as () => void)();
+    });
+
+    expect(result.current.consent).toEqual([Category.PerformanceCookies]);
+    expect(onChange).toHaveBeenCalledWith([Category.PerformanceCookies]);
   });
 
   it('opens the OneTrust preference center', () => {

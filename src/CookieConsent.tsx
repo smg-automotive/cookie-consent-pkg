@@ -22,16 +22,15 @@ declare global {
 }
 
 type Context = {
-  currentConsent: Category[];
-  isOneTrustLoaded: boolean;
+  consent: Category[];
+  isLoaded: boolean;
   openPreferenceCenter: () => void;
 };
 
 const CookieConsentContext = createContext<Context>({
-  currentConsent: [],
-  isOneTrustLoaded: false,
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  openPreferenceCenter: () => {},
+  consent: [],
+  isLoaded: false,
+  openPreferenceCenter: () => null,
 });
 
 type Props = {
@@ -39,43 +38,51 @@ type Props = {
   onConsentChanged?: (newConsent: Category[]) => void;
 };
 
+type OneTrust = {
+  consent: Category[];
+  isLoaded: boolean;
+};
+
 const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
   enabled,
   onConsentChanged,
   children,
 }) => {
-  const [currentConsent, setCurrentConsent] = useState<Category[]>([]);
-  const [isOneTrustLoaded, setIsOneTrustLoaded] = useState(false);
-
-  const setInitialConsent = () => {
-    setCurrentConsent((prevConsent) =>
-      prevConsent.length
-        ? prevConsent
-        : (window.OnetrustActiveGroups?.split(',') as Category[]).filter(
-            Boolean
-          )
-    );
-  };
+  const [oneTrust, setOneTrust] = useState<OneTrust>({
+    consent: [Category.StrictlyNecessaryCookies],
+    isLoaded: false,
+  });
 
   useEffect(() => {
-    if (enabled) {
-      window.OptanonWrapper = () => {
-        const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
-        if (OneTrustOnConsentChanged) {
-          OneTrustOnConsentChanged((event) => {
-            const activeGroups = event.detail || [];
-            onConsentChanged && onConsentChanged(activeGroups);
-            setCurrentConsent(activeGroups);
-          });
-        }
+    if (!enabled) return;
 
-        setInitialConsent();
-        setIsOneTrustLoaded(true);
-      };
-    } else {
-      setCurrentConsent([Category.StrictlyNecessaryCookies]);
-    }
-  }, [enabled]);
+    window.OptanonWrapper = () => {
+      const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
+      if (OneTrustOnConsentChanged) {
+        OneTrustOnConsentChanged((event) => {
+          const activeGroups = event.detail || [];
+          onConsentChanged && onConsentChanged(activeGroups);
+          setOneTrust({ consent: activeGroups, isLoaded: true });
+        });
+      }
+
+      setOneTrust((prevOneTrust) => {
+        if (!prevOneTrust.isLoaded) {
+          const oneTrustActiveGroups = (
+            window.OnetrustActiveGroups?.split(',') as Category[]
+          )?.filter(Boolean);
+          return {
+            consent:
+              oneTrustActiveGroups && oneTrustActiveGroups.length
+                ? oneTrustActiveGroups
+                : prevOneTrust.consent,
+            isLoaded: true,
+          };
+        }
+        return prevOneTrust;
+      });
+    };
+  }, [enabled, onConsentChanged]);
 
   const openPreferenceCenter = () => {
     window.OneTrust?.ToggleInfoDisplay();
@@ -83,7 +90,11 @@ const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
 
   return (
     <CookieConsentContext.Provider
-      value={{ currentConsent, openPreferenceCenter, isOneTrustLoaded }}
+      value={{
+        consent: oneTrust.consent,
+        openPreferenceCenter,
+        isLoaded: oneTrust.isLoaded,
+      }}
     >
       {children}
     </CookieConsentContext.Provider>
