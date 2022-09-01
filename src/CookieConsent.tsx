@@ -2,6 +2,7 @@ import {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useEffect,
   useState,
 } from 'react';
@@ -53,36 +54,39 @@ const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
     isLoaded: false,
   });
 
+  const setInitialConsent = useCallback(() => {
+    setOneTrust((prevOneTrust) => {
+      if (prevOneTrust.isLoaded) return prevOneTrust;
+
+      const oneTrustActiveGroups = (
+        window.OnetrustActiveGroups?.split(',') as Category[]
+      )?.filter(Boolean);
+      return {
+        consent:
+          oneTrustActiveGroups && oneTrustActiveGroups.length
+            ? oneTrustActiveGroups
+            : prevOneTrust.consent,
+        isLoaded: true,
+      };
+    });
+  }, []);
+
+  const optanonWrapper = useCallback(() => {
+    const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
+    if (OneTrustOnConsentChanged) {
+      OneTrustOnConsentChanged((event) => {
+        const activeGroups = event.detail || [];
+        onConsentChanged && onConsentChanged(activeGroups);
+        setOneTrust({ consent: activeGroups, isLoaded: true });
+      });
+    }
+  }, [onConsentChanged]);
+
   useEffect(() => {
     if (!enabled) return;
-
-    window.OptanonWrapper = () => {
-      const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
-      if (OneTrustOnConsentChanged) {
-        OneTrustOnConsentChanged((event) => {
-          const activeGroups = event.detail || [];
-          onConsentChanged && onConsentChanged(activeGroups);
-          setOneTrust({ consent: activeGroups, isLoaded: true });
-        });
-      }
-
-      setOneTrust((prevOneTrust) => {
-        if (!prevOneTrust.isLoaded) {
-          const oneTrustActiveGroups = (
-            window.OnetrustActiveGroups?.split(',') as Category[]
-          )?.filter(Boolean);
-          return {
-            consent:
-              oneTrustActiveGroups && oneTrustActiveGroups.length
-                ? oneTrustActiveGroups
-                : prevOneTrust.consent,
-            isLoaded: true,
-          };
-        }
-        return prevOneTrust;
-      });
-    };
-  }, [enabled, onConsentChanged]);
+    window.OptanonWrapper = optanonWrapper;
+    setInitialConsent();
+  }, [enabled, optanonWrapper, setInitialConsent]);
 
   const openPreferenceCenter = () => {
     window.OneTrust?.ToggleInfoDisplay();
