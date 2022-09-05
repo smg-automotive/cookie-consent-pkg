@@ -65,6 +65,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   }, []);
 
   const optanonWrapper = React.useCallback(() => {
+    setInitialConsent();
     const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
     if (OneTrustOnConsentChanged) {
       OneTrustOnConsentChanged((event) => {
@@ -73,13 +74,12 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
         setOneTrust({ consent: activeGroups, isLoaded: true });
       });
     }
-  }, [onConsentChanged]);
+  }, [onConsentChanged, setInitialConsent]);
 
   React.useEffect(() => {
     if (!enabled) return;
     window.OptanonWrapper = optanonWrapper;
-    setInitialConsent();
-  }, [enabled, optanonWrapper, setInitialConsent]);
+  }, [enabled, optanonWrapper]);
 
   const openPreferenceCenter = () => {
     window.OneTrust?.ToggleInfoDisplay();
