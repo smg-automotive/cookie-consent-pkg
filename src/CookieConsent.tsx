@@ -49,20 +49,6 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     isLoaded: false,
   });
 
-  const getCookie = (name: string) => {
-    const value = '; ' + document.cookie;
-    /* eslint-disable-next-line no-console */
-    console.log(value);
-    const parts = value.split('; ' + name + '=');
-    /* eslint-disable-next-line no-console */
-    console.log(parts);
-    if (parts && parts.length == 2) {
-      return parts.pop()?.split(';').shift();
-    } else {
-      return null;
-    }
-  };
-
   const setInitialConsent = React.useCallback(() => {
     setOneTrust((prevOneTrust) => {
       if (prevOneTrust.isLoaded) return prevOneTrust;
@@ -74,7 +60,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
         oneTrustActiveGroups && oneTrustActiveGroups.length
           ? oneTrustActiveGroups
           : prevOneTrust.consent;
-      const showBanner = !!getCookie('OptanonAlertBoxClosed');
+      const showBanner = document.cookie.includes('OptanonAlertBoxClosed');
       onOneTrustLoaded && onOneTrustLoaded(initialConsent, showBanner);
       return {
         consent: initialConsent,
