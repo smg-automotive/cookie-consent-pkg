@@ -81,10 +81,10 @@ describe('CookieConsent', () => {
     });
 
     rerender();
-    expect(onOneTrustLoaded).toHaveBeenCalledWith([
-      Category.PerformanceCookies,
-      Category.FunctionalCookies,
-    ]);
+    expect(onOneTrustLoaded).toHaveBeenCalledWith(
+      [Category.PerformanceCookies, Category.FunctionalCookies],
+      false
+    );
   });
 
   it('changes the consent if the user uses the preference center', () => {
