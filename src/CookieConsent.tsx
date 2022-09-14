@@ -30,7 +30,7 @@ const CookieConsentContext = React.createContext<Context>({
 type Props = {
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
-  onOneTrustLoaded?: (consent: Category[], showBanner: boolean) => void;
+  onOneTrustLoaded?: (consent: Category[], hideBanner: boolean) => void;
 };
 
 type OneTrust = {
@@ -60,8 +60,8 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
         oneTrustActiveGroups && oneTrustActiveGroups.length
           ? oneTrustActiveGroups
           : prevOneTrust.consent;
-      const showBanner = document.cookie.includes('OptanonAlertBoxClosed');
-      onOneTrustLoaded && onOneTrustLoaded(initialConsent, showBanner);
+      const hideBanner = document.cookie.includes('OptanonAlertBoxClosed');
+      onOneTrustLoaded && onOneTrustLoaded(initialConsent, hideBanner);
       return {
         consent: initialConsent,
         isLoaded: true,
