@@ -30,7 +30,7 @@ const CookieConsentContext = React.createContext<Context>({
 type Props = {
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
-  onOneTrustLoaded?: (newConsent: Category[]) => void;
+  onOneTrustLoaded?: (consent: Category[]) => void;
 };
 
 type OneTrust = {
@@ -73,6 +73,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
     if (OneTrustOnConsentChanged) {
       OneTrustOnConsentChanged((event) => {
+        console.log(event);
         const activeGroups = event.detail || [];
         onConsentChanged && onConsentChanged(activeGroups);
         setOneTrust({ consent: activeGroups, isLoaded: true });

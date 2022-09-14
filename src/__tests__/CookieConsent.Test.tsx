@@ -11,7 +11,7 @@ const wrapper = ({
 }: {
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
-  onOneTrustLoaded?: (newConsent: Category[]) => void;
+  onOneTrustLoaded?: (consent: Category[]) => void;
 }) => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <CookieConsentProvider
