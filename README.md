@@ -40,12 +40,15 @@ enables you to react on changes (e.g. block certain third party scripts).
 <CookieConsentProvider
     enabled={true}
     onConsentChanged={(newConsent) => console.log(newConsent)}
+    onOneTrustLoaded={(initialConsent, hideBanner) => console.log(initialConsent)}
 >
     <div>your app..</div>
 </CookieConsentProvider>
 ```
 
 `onConsentChanged` is optional and allows you to fire events when the user changed the consent in the preference center.
+`onOneTrustLoaded` is optional and is called after OneTrust has been loaded. `hideBanner` is `true` if the banner has
+been shown in a previous session.
 
 ### CookieConsentContext
 
