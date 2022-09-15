@@ -11,7 +11,7 @@ const wrapper = ({
 }: {
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
-  onOneTrustLoaded?: (consent: Category[]) => void;
+  onOneTrustLoaded?: (consent: Category[], hideBanner: boolean) => void;
 }) => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <CookieConsentProvider
@@ -64,7 +64,7 @@ describe('CookieConsent', () => {
     expect(result.current.isLoaded).toEqual(true);
   });
 
-  it('calls the onOneTrustLoaded with the initial consent', () => {
+  it('calls onOneTrustLoaded with the initial consent', () => {
     const onOneTrustLoaded = jest.fn();
     window.OnetrustActiveGroups = `${Category.PerformanceCookies},${Category.FunctionalCookies}`;
     /* eslint-disable-next-line @typescript-eslint/no-empty-function */
