@@ -14,6 +14,7 @@ const OneTrustCookieConsentBanner: FC<Props> = ({ domainScript, enabled }) => {
       script.src = src;
       script.type = 'text/javascript';
       script.dataset.domainScript = domainScript;
+      script.dataset.documentLanguage = 'true';
       script.async = true;
       document.head.appendChild(script);
     }
