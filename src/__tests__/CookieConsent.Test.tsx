@@ -7,14 +7,17 @@ import { Category } from '../category';
 const wrapper = ({
   enabled,
   onConsentChanged,
+  onOneTrustLoaded,
 }: {
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
+  onOneTrustLoaded?: (consent: Category[], hideBanner: boolean) => void;
 }) => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <CookieConsentProvider
       enabled={enabled}
       onConsentChanged={onConsentChanged}
+      onOneTrustLoaded={onOneTrustLoaded}
     >
       {children}
     </CookieConsentProvider>
@@ -59,6 +62,29 @@ describe('CookieConsent', () => {
       Category.FunctionalCookies,
     ]);
     expect(result.current.isLoaded).toEqual(true);
+  });
+
+  it('calls onOneTrustLoaded with the initial consent', () => {
+    const onOneTrustLoaded = jest.fn();
+    window.OnetrustActiveGroups = `${Category.PerformanceCookies},${Category.FunctionalCookies}`;
+    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+    window.OptanonWrapper = function () {};
+    const { rerender } = renderHook(
+      () => React.useContext(CookieConsentContext),
+      {
+        wrapper: wrapper({ enabled: true, onOneTrustLoaded }),
+      }
+    );
+
+    act(() => {
+      (window.OptanonWrapper as () => void)();
+    });
+
+    rerender();
+    expect(onOneTrustLoaded).toHaveBeenCalledWith(
+      [Category.PerformanceCookies, Category.FunctionalCookies],
+      false
+    );
   });
 
   it('changes the consent if the user uses the preference center', () => {

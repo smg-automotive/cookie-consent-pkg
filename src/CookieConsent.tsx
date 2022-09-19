@@ -30,6 +30,7 @@ const CookieConsentContext = React.createContext<Context>({
 type Props = {
   enabled: boolean;
   onConsentChanged?: (newConsent: Category[]) => void;
+  onOneTrustLoaded?: (consent: Category[], hideBanner: boolean) => void;
 };
 
 type OneTrust = {
@@ -40,6 +41,7 @@ type OneTrust = {
 const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   enabled,
   onConsentChanged,
+  onOneTrustLoaded,
   children,
 }) => {
   const [oneTrust, setOneTrust] = React.useState<OneTrust>({
@@ -54,15 +56,18 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
       const oneTrustActiveGroups = (
         window.OnetrustActiveGroups?.split(',') as Category[]
       )?.filter(Boolean);
+      const initialConsent =
+        oneTrustActiveGroups && oneTrustActiveGroups.length
+          ? oneTrustActiveGroups
+          : prevOneTrust.consent;
+      const hideBanner = document.cookie.includes('OptanonAlertBoxClosed');
+      onOneTrustLoaded && onOneTrustLoaded(initialConsent, hideBanner);
       return {
-        consent:
-          oneTrustActiveGroups && oneTrustActiveGroups.length
-            ? oneTrustActiveGroups
-            : prevOneTrust.consent,
+        consent: initialConsent,
         isLoaded: true,
       };
     });
-  }, []);
+  }, [onOneTrustLoaded]);
 
   const optanonWrapper = React.useCallback(() => {
     setInitialConsent();
