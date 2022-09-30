@@ -18,12 +18,14 @@ declare global {
 type Context = {
   consent: Category[];
   isLoaded: boolean;
+  hasInteracted: boolean;
   openPreferenceCenter: () => void;
 };
 
 const CookieConsentContext = React.createContext<Context>({
   consent: [],
   isLoaded: false,
+  hasInteracted: false,
   openPreferenceCenter: () => null,
 });
 
@@ -36,6 +38,7 @@ type Props = {
 type OneTrust = {
   consent: Category[];
   isLoaded: boolean;
+  hasInteracted: boolean;
 };
 
 const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
@@ -47,6 +50,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   const [oneTrust, setOneTrust] = React.useState<OneTrust>({
     consent: [Category.StrictlyNecessaryCookies],
     isLoaded: false,
+    hasInteracted: false,
   });
 
   const setInitialConsent = React.useCallback(() => {
@@ -65,6 +69,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
       return {
         consent: initialConsent,
         isLoaded: true,
+        hasInteracted: hideBanner,
       };
     });
   }, [onOneTrustLoaded]);
@@ -76,7 +81,11 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
       OneTrustOnConsentChanged((event) => {
         const activeGroups = event.detail || [];
         onConsentChanged && onConsentChanged(activeGroups);
-        setOneTrust({ consent: activeGroups, isLoaded: true });
+        setOneTrust({
+          consent: activeGroups,
+          isLoaded: true,
+          hasInteracted: true,
+        });
       });
     }
   }, [onConsentChanged, setInitialConsent]);
@@ -96,6 +105,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
         consent: oneTrust.consent,
         openPreferenceCenter,
         isLoaded: oneTrust.isLoaded,
+        hasInteracted: oneTrust.hasInteracted,
       }}
     >
       {children}

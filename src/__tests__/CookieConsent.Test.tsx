@@ -62,6 +62,7 @@ describe('CookieConsent', () => {
       Category.FunctionalCookies,
     ]);
     expect(result.current.isLoaded).toEqual(true);
+    expect(result.current.hasInteracted).toEqual(false);
   });
 
   it('calls onOneTrustLoaded with the initial consent', () => {
@@ -102,6 +103,7 @@ describe('CookieConsent', () => {
     });
     rerender();
     expect(result.current.isLoaded).toEqual(true);
+    expect(result.current.hasInteracted).toEqual(false);
     expect(result.current.consent).toEqual([Category.StrictlyNecessaryCookies]);
 
     act(() => {
@@ -114,6 +116,7 @@ describe('CookieConsent', () => {
     });
 
     expect(result.current.consent).toEqual([Category.PerformanceCookies]);
+    expect(result.current.hasInteracted).toEqual(true);
     expect(onChange).toHaveBeenCalledWith([Category.PerformanceCookies]);
   });
 

@@ -58,7 +58,7 @@ using `CookieConsentContext`.
 ````tsx
 import {CookieConsentContext} from '@smg-automotive/cookie-consent-pkg';
 
-const {consent, openPreferenceCenter, isLoaded} = useContext(CookieConsentContext);
+const {consent, openPreferenceCenter, isLoaded, hasInteracted } = useContext(CookieConsentContext);
 ````
 
 | property             | type       | description                                                                                                                                           |
@@ -66,6 +66,7 @@ const {consent, openPreferenceCenter, isLoaded} = useContext(CookieConsentContex
 | consent              | Category[] | Array of the current consent. If the user uses a script blocker or you disabled OneTrust in the Provider, only the stricly necessary category is set. |
 | openPreferenceCenter | Function   | Opens the OneTrust preference center.                                                                                                                 |
 | isLoaded             | boolean    | True if OneTrust has been successfully loaded and invoked.                                                                                            |
+| hasInteracted        | boolean    | True if the user has interacted with the banner at some point.                                                                                        |
 
 ## Development
 
