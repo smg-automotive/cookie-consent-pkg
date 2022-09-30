@@ -88,6 +88,29 @@ describe('CookieConsent', () => {
     );
   });
 
+  it('calls onOneTrustLoaded with the initial consent', () => {
+    const onOneTrustLoaded = jest.fn();
+    window.OnetrustActiveGroups = `${Category.PerformanceCookies},${Category.FunctionalCookies}`;
+    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+    window.OptanonWrapper = function () {};
+    const { rerender } = renderHook(
+      () => React.useContext(CookieConsentContext),
+      {
+        wrapper: wrapper({ enabled: true, onOneTrustLoaded }),
+      }
+    );
+
+    act(() => {
+      (window.OptanonWrapper as () => void)();
+    });
+
+    rerender();
+    expect(onOneTrustLoaded).toHaveBeenCalledWith(
+      [Category.PerformanceCookies, Category.FunctionalCookies],
+      false
+    );
+  });
+
   it('changes the consent if the user uses the preference center', () => {
     const onChange = jest.fn();
     const { result, rerender } = renderHook(
