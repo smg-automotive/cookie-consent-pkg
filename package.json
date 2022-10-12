@@ -29,7 +29,7 @@
   "homepage": "https://github.com/smg-automotive/cookie-consent-pkg#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "22.0.2",
-    "@rollup/plugin-node-resolve": "13.3.0",
+    "@rollup/plugin-node-resolve": "14.1.0",
     "@rollup/plugin-typescript": "8.3.4",
     "@smg-automotive/eslint-config": "2.0.31",
     "@testing-library/jest-dom": "5.16.5",
