@@ -1,11 +1,10 @@
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import dts from 'rollup-plugin-dts';
 import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
-const dts = require('rollup-plugin-dts').default;
-
-const packageJson = require('./package.json');
+import packageJson from './package.json' assert { type: 'json' };
 
 export default [
   {
@@ -31,8 +30,8 @@ export default [
     external: ['react', 'react-dom'],
   },
   {
-    input: 'dist/esm/types/index.d.ts',
+    input: 'src/index.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts()],
+    plugins: [dts({ tsconfig: './tsconfig.build.json' })],
   },
 ];
