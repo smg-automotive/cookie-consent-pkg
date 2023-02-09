@@ -13,7 +13,7 @@
   },
   "scripts": {
     "version": "npm run build",
-    "build": "rimraf dist && rollup -c --bundleConfigAsCjs",
+    "build": "rimraf dist && rollup -c",
     "lint": "eslint --ext ts,js,tsx,jsx,json .",
     "format": "npm run lint -- --fix",
     "typecheck": "tsc --noEmit",
