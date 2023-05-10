@@ -120,7 +120,6 @@ const useCookieConsent = () => {
       'useCookieConsent must be used within a CookieConsentProvider'
     );
   }
-
   return context;
 };
 
