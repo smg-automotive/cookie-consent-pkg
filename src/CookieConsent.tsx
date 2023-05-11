@@ -113,4 +113,14 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   );
 };
 
-export { CookieConsentProvider, CookieConsentContext };
+const useCookieConsent = () => {
+  const context = React.useContext(CookieConsentContext);
+  if (context === undefined) {
+    throw new Error(
+      'useCookieConsent must be used within a CookieConsentProvider'
+    );
+  }
+  return context;
+};
+
+export { CookieConsentProvider, CookieConsentContext, useCookieConsent };
