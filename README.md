@@ -11,25 +11,25 @@ npm install @smg-automotive/cookie-consent-pkg
 
 ### Loading OneTrust banner
 
-````tsx
-import {OneTrustCookieConsentBanner} from '@smg-automotive/cookie-consent-pkg';
+```tsx
+import { OneTrustCookieConsentBanner } from '@smg-automotive/cookie-consent-pkg';
 
-<OneTrustCookieConsentBanner domainScript="yourScriptID" enabled={true}/>
-````
+<OneTrustCookieConsentBanner domainScript="yourScriptID" enabled={true} />;
+```
 
 `OneTrustCookieConsentBanner` adds the required script tags to the document head and preloads the script so that it
-loads as early as possible. Alternatively, if you are in a Next.js environment, you can add the following to the _
+loads as early as possible. Alternatively, if you are in a Next.js environment, you can add the following to the \_
 document.tsx component:
 
-````tsx
+```tsx
 import Script from 'next/script';
 
 <Script
-    src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
-    data-domain-script="yourScriptID"
-    strategy="beforeInteractive"
-/>
-````
+  src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
+  data-domain-script="yourScriptID"
+  strategy="beforeInteractive"
+/>;
+```
 
 ### CookieConsentProvider
 
@@ -38,11 +38,11 @@ enables you to react on changes (e.g. block certain third party scripts).
 
 ```tsx
 <CookieConsentProvider
-    enabled={true}
-    onConsentChanged={(newConsent) => console.log(newConsent)}
-    onOneTrustLoaded={(initialConsent, hideBanner) => console.log(initialConsent)}
+  enabled={true}
+  onConsentChanged={(newConsent) => console.log(newConsent)}
+  onOneTrustLoaded={(initialConsent, hideBanner) => console.log(initialConsent)}
 >
-    <div>your app..</div>
+  <div>your app..</div>
 </CookieConsentProvider>
 ```
 
@@ -53,16 +53,17 @@ been shown in a previous session.
 ### CookieConsentContext
 
 You can get the current consent and other properties related to cookie consent in your component
-using `CookieConsentContext`.
+using `useCookieConsent` hook.
 
-````tsx
-import {CookieConsentContext} from '@smg-automotive/cookie-consent-pkg';
+```tsx
+import { useCookieConsent } from '@smg-automotive/cookie-consent-pkg';
 
-const {consent, openPreferenceCenter, isLoaded, hasInteracted } = useContext(CookieConsentContext);
-````
+const { consent, openPreferenceCenter, isLoaded, hasInteracted } =
+  useCookieConsent;
+```
 
 | property             | type       | description                                                                                                                                           |
-|----------------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | consent              | Category[] | Array of the current consent. If the user uses a script blocker or you disabled OneTrust in the Provider, only the stricly necessary category is set. |
 | openPreferenceCenter | Function   | Opens the OneTrust preference center.                                                                                                                 |
 | isLoaded             | boolean    | True if OneTrust has been successfully loaded and invoked.                                                                                            |
