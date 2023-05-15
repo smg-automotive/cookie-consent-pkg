@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/smg-automotive/cookie-consent-pkg#readme",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "24.1.0",
+    "@rollup/plugin-commonjs": "25.0.0",
     "@rollup/plugin-node-resolve": "15.0.2",
     "@rollup/plugin-typescript": "11.1.0",
     "@smg-automotive/eslint-config": "3.0.19",
