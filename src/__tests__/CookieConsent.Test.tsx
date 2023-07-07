@@ -13,7 +13,8 @@ const wrapper = ({
   onConsentChanged?: (newConsent: Category[]) => void;
   onOneTrustLoaded?: (consent: Category[], hideBanner: boolean) => void;
 }) => {
-  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  // eslint-disable-next-line react/display-name
+  return ({ children }: { children: React.ReactNode }) => (
     <CookieConsentProvider
       enabled={enabled}
       onConsentChanged={onConsentChanged}
@@ -22,7 +23,6 @@ const wrapper = ({
       {children}
     </CookieConsentProvider>
   );
-  return Wrapper;
 };
 
 describe('CookieConsent', () => {
