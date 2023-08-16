@@ -75,7 +75,7 @@ describe('CookieConsent', () => {
     rerender();
     expect(onOneTrustLoaded).toHaveBeenCalledWith(
       [Category.PerformanceCookies, Category.FunctionalCookies],
-      false
+      false,
     );
   });
 
