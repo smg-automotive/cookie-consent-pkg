@@ -54,7 +54,9 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   });
 
   const setInitialConsent = React.useCallback(() => {
+    console.log("setting initial consent")
     setOneTrust((prevOneTrust) => {
+      console.log({prevOneTrust})
       if (prevOneTrust.isLoaded) return prevOneTrust;
 
       const oneTrustActiveGroups = (
@@ -66,6 +68,12 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
           : prevOneTrust.consent;
       const hideBanner = document.cookie.includes('OptanonAlertBoxClosed');
       onOneTrustLoaded && onOneTrustLoaded(initialConsent, hideBanner);
+
+      console.log({
+        consent: initialConsent,
+        isLoaded: true,
+        hasInteracted: hideBanner,
+      })
       return {
         consent: initialConsent,
         isLoaded: true,
