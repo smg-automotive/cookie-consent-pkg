@@ -54,8 +54,10 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   });
 
   const setInitialConsent = React.useCallback(() => {
+    // eslint-disable-next-line no-console
     console.log("setting initial consent")
     setOneTrust((prevOneTrust) => {
+      // eslint-disable-next-line no-console
       console.log({prevOneTrust})
       if (prevOneTrust.isLoaded) return prevOneTrust;
 
@@ -69,6 +71,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
       const hideBanner = document.cookie.includes('OptanonAlertBoxClosed');
       onOneTrustLoaded && onOneTrustLoaded(initialConsent, hideBanner);
 
+      // eslint-disable-next-line no-console
       console.log({
         consent: initialConsent,
         isLoaded: true,
