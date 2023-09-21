@@ -86,6 +86,8 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   }, [onOneTrustLoaded]);
 
   const optanonWrapper = React.useCallback(() => {
+    // eslint-disable-next-line no-console
+    console.log('optanonWrapper called');
     setInitialConsent();
     const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
     if (OneTrustOnConsentChanged) {
@@ -102,6 +104,8 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   }, [onConsentChanged, setInitialConsent]);
 
   React.useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('effect runs', enabled);
     if (!enabled) return;
     window.OptanonWrapper = optanonWrapper;
   }, [enabled, optanonWrapper]);
