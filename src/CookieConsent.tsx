@@ -55,10 +55,10 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
 
   const setInitialConsent = React.useCallback(() => {
     // eslint-disable-next-line no-console
-    console.log("setting initial consent")
+    console.log('setting initial consent');
     setOneTrust((prevOneTrust) => {
       // eslint-disable-next-line no-console
-      console.log({prevOneTrust})
+      console.log({ prevOneTrust });
       if (prevOneTrust.isLoaded) return prevOneTrust;
 
       const oneTrustActiveGroups = (
@@ -76,7 +76,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
         consent: initialConsent,
         isLoaded: true,
         hasInteracted: hideBanner,
-      })
+      });
       return {
         consent: initialConsent,
         isLoaded: true,
