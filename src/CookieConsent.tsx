@@ -54,11 +54,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   });
 
   const setInitialConsent = React.useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log('setting initial consent');
     setOneTrust((prevOneTrust) => {
-      // eslint-disable-next-line no-console
-      console.log({ prevOneTrust });
       if (prevOneTrust.isLoaded) return prevOneTrust;
 
       const oneTrustActiveGroups = (
@@ -71,12 +67,6 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
       const hideBanner = document.cookie.includes('OptanonAlertBoxClosed');
       onOneTrustLoaded && onOneTrustLoaded(initialConsent, hideBanner);
 
-      // eslint-disable-next-line no-console
-      console.log({
-        consent: initialConsent,
-        isLoaded: true,
-        hasInteracted: hideBanner,
-      });
       return {
         consent: initialConsent,
         isLoaded: true,
@@ -86,8 +76,6 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   }, [onOneTrustLoaded]);
 
   const optanonWrapper = React.useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log('optanonWrapper called');
     setInitialConsent();
     const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
     if (OneTrustOnConsentChanged) {
@@ -104,10 +92,21 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
   }, [onConsentChanged, setInitialConsent]);
 
   React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('effect runs', enabled);
     if (!enabled) return;
-    window.OptanonWrapper = optanonWrapper;
+
+    /*
+     * 1. OneTrust loads the consent banner
+     * 2. When OneTrust finishes loading, it calls the window.OptanonWrapper function
+     *
+     * When OneTrust was loaded before React was ready, OptanonWrapper is not overwritten.
+     * In that case, we call OptanonWrapper manually
+     * */
+    const oneTrustAlreadyLoaded = typeof window.Optanon === 'object';
+    if (oneTrustAlreadyLoaded) {
+      optanonWrapper();
+    } else {
+      window.OptanonWrapper = optanonWrapper;
+    }
   }, [enabled, optanonWrapper]);
 
   const openPreferenceCenter = () => {
