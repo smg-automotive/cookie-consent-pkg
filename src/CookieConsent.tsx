@@ -104,9 +104,8 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     const oneTrustAlreadyLoaded = typeof window.Optanon === 'object';
     if (oneTrustAlreadyLoaded) {
       optanonWrapper();
-    } else {
-      window.OptanonWrapper = optanonWrapper;
     }
+    window.OptanonWrapper = optanonWrapper;
   }, [enabled, optanonWrapper]);
 
   const openPreferenceCenter = () => {
