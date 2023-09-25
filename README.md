@@ -11,24 +11,24 @@ npm install @smg-automotive/cookie-consent-pkg
 
 ### Loading OneTrust banner
 
+`OneTrustCookieConsentBanner` adds the required script tags to the document head and preloads the script so that it
+loads as early as possible. only loads a 3KB script. All subsequent scripts load [async](https://developer.onetrust.com/onetrust/docs/performance-availability-cookie-script#description).
+
 ```tsx
 import { OneTrustCookieConsentBanner } from '@smg-automotive/cookie-consent-pkg';
 
+// loads using JavaScript. You may gain more performance by adding it manually to the server HTML
 <OneTrustCookieConsentBanner domainScript="yourScriptID" enabled={true} />;
 ```
 
-`OneTrustCookieConsentBanner` adds the required script tags to the document head and preloads the script so that it
-loads as early as possible. Alternatively, if you are in a Next.js environment, you can add the following to the \_
-document.tsx component:
+ Alternatively, if you are serving an HTML from the server, consider adding it manually inside the document head.
 
 ```tsx
-import Script from 'next/script';
-
-<Script
-  src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
-  data-domain-script="yourScriptID"
-  strategy="beforeInteractive"
-/>;
+<script
+    src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
+    data-domain-script="yourScriptID"
+    data-document-language="true"
+/>
 ```
 
 ### CookieConsentProvider

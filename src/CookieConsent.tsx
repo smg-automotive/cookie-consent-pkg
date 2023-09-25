@@ -66,6 +66,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
           : prevOneTrust.consent;
       const hideBanner = document.cookie.includes('OptanonAlertBoxClosed');
       onOneTrustLoaded && onOneTrustLoaded(initialConsent, hideBanner);
+
       return {
         consent: initialConsent,
         isLoaded: true,
@@ -92,7 +93,20 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
 
   React.useEffect(() => {
     if (!enabled) return;
-    window.OptanonWrapper = optanonWrapper;
+
+    /*
+     * 1. OneTrust loads the consent banner
+     * 2. When OneTrust finishes loading, it calls the window.OptanonWrapper function
+     *
+     * When OneTrust was loaded before React was ready, OptanonWrapper is not overwritten.
+     * In that case, we call OptanonWrapper manually
+     * */
+    const oneTrustAlreadyLoaded = typeof window.Optanon === 'object';
+    if (oneTrustAlreadyLoaded) {
+      optanonWrapper();
+    } else {
+      window.OptanonWrapper = optanonWrapper;
+    }
   }, [enabled, optanonWrapper]);
 
   const openPreferenceCenter = () => {
