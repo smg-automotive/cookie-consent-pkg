@@ -13,8 +13,8 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
   },
   "exclude": ["dist", "node_modules"],
-  "include": ["src"]
+  "include": ["src"],
 }
