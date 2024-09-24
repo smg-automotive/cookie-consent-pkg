@@ -53,8 +53,5 @@
   "peerDependencies": {
     "react": ">= 16.0.0",
     "react-dom": ">= 16.0.0"
-  },
-  "dependencies": {
-    "@types/node": "20.14.0"
   }
 }
