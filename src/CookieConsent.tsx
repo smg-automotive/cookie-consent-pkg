@@ -110,19 +110,22 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     }
   }, [enabled, optanonWrapper]);
 
-  const openPreferenceCenter = () => {
-    window.OneTrust?.ToggleInfoDisplay();
-  };
+  const value = React.useMemo(() => {
+    const openPreferenceCenter = () => {
+      // eslint-disable-next-line sonarjs/new-cap
+      window.OneTrust?.ToggleInfoDisplay();
+    };
+
+    return {
+      consent: oneTrust.consent,
+      isLoaded: oneTrust.isLoaded,
+      hasInteracted: oneTrust.hasInteracted,
+      openPreferenceCenter,
+    };
+  }, [oneTrust]);
 
   return (
-    <CookieConsentContext.Provider
-      value={{
-        consent: oneTrust.consent,
-        openPreferenceCenter,
-        isLoaded: oneTrust.isLoaded,
-        hasInteracted: oneTrust.hasInteracted,
-      }}
-    >
+    <CookieConsentContext.Provider value={value}>
       {children}
     </CookieConsentContext.Provider>
   );
