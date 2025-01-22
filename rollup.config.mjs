@@ -7,11 +7,7 @@ import commonjs from '@rollup/plugin-commonjs';
 
 import packageJson from './package.json' assert { type: 'json' };
 
-const plugins = [
-  peerDepsExternal(),
-  resolve(),
-  commonjs(),
-]
+const plugins = [peerDepsExternal(), resolve(), commonjs()];
 
 export default [
   {
