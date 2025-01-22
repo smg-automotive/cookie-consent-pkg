@@ -14,7 +14,7 @@
   "scripts": {
     "version": "npm run build",
     "build": "rimraf dist && rollup -c",
-    "lint": "eslint --ext ts,js,tsx,jsx,json .",
+    "lint": "eslint .",
     "format": "npm run lint -- --fix",
     "typecheck": "tsc --noEmit",
     "test": "jest",
@@ -54,5 +54,8 @@
   "peerDependencies": {
     "react": ">= 16.0.0",
     "react-dom": ">= 16.0.0"
+  },
+  "dependencies": {
+    "globals": "15.14.0"
   }
 }
