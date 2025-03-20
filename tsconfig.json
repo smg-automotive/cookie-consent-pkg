@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "jsx": "react",
-    "module": "esnext",
-    "declaration": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
+    "jsx": "react-jsx",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "es2018",
+    "types": ["@testing-library/jest-dom"],
+    "strict": true
   },
   "exclude": ["dist", "node_modules"],
   "include": ["src"]

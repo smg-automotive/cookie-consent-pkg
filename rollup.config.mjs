@@ -1,54 +1,58 @@
+import preserveDirectives from 'rollup-plugin-preserve-directives';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import dts from 'rollup-plugin-dts';
-import { dirname } from 'path';
+import { dirname, join } from 'node:path';
 import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
 import packageJson from './package.json' with { type: 'json' };
 
-const plugins = [peerDepsExternal(), resolve(), commonjs()];
+const plugins = [
+  peerDepsExternal(),
+  resolve(),
+  commonjs(),
+  preserveDirectives(),
+];
+const tsConfigPath = join(import.meta.dirname, 'tsconfig.build.json');
+
+// Utility function to get output directory from package.json fields
+const outputDir = (format) =>
+  format === 'cjs' ? dirname(packageJson.main) : dirname(packageJson.module);
+
+// Common TypeScript plugin configuration
+const tsPlugin = (outDir) => {
+  return typescript({
+    tsconfig: tsConfigPath,
+    compilerOptions: {
+      outDir,
+      declaration: true,
+    },
+  });
+};
+
+// Base configuration for JS (CJS & ESM)
+const createJsConfig = (format) => ({
+  input: 'src/index.ts',
+  output: [
+    {
+      format,
+      dir: outputDir(format),
+      sourcemap: true,
+      preserveModules: true,
+      preserveModulesRoot: 'src',
+    },
+  ],
+  plugins: [...plugins, tsPlugin(outputDir(format))],
+  external: ['react', 'react-dom'],
+});
 
 export default [
-  {
-    input: 'src/index.ts',
-    output: [
-      {
-        file: packageJson.main,
-        format: 'cjs',
-        sourcemap: true,
-      },
-    ],
-    plugins: [
-      ...plugins,
-      typescript({
-        tsconfig: './tsconfig.build.json',
-        outDir: dirname(packageJson.main),
-      }),
-    ],
-    external: ['react', 'react-dom'],
-  },
-  {
-    input: 'src/index.ts',
-    output: [
-      {
-        file: packageJson.module,
-        format: 'esm',
-        sourcemap: true,
-      },
-    ],
-    plugins: [
-      ...plugins,
-      typescript({
-        tsconfig: './tsconfig.build.json',
-        outDir: dirname(packageJson.module),
-      }),
-    ],
-    external: ['react', 'react-dom'],
-  },
+  createJsConfig('cjs'),
+  createJsConfig('esm'),
   {
     input: 'src/index.ts',
     output: [{ file: packageJson.types, format: 'esm' }],
-    plugins: [dts({ tsconfig: './tsconfig.build.json' })],
+    plugins: [dts({ tsconfig: tsConfigPath })],
   },
 ];
