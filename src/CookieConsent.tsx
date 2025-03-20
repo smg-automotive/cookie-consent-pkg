@@ -1,5 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/naming-convention
-import * as React from 'react';
+'use client';
+
+import {
+  type Context,
+  createContext,
+  type FC,
+  type PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { Category } from './category';
 
@@ -16,14 +27,14 @@ declare global {
   }
 }
 
-type Context = {
+interface ContextData {
   consent: Category[];
   isLoaded: boolean;
   hasInteracted: boolean;
   openPreferenceCenter: () => void;
-};
+}
 
-const CookieConsentContext = React.createContext<Context>({
+const CookieConsentContext: Context<ContextData> = createContext<ContextData>({
   consent: [],
   isLoaded: false,
   hasInteracted: false,
@@ -42,19 +53,19 @@ type OneTrust = {
   hasInteracted: boolean;
 };
 
-const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
+const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
   enabled,
   onConsentChanged,
   onOneTrustLoaded,
   children,
 }) => {
-  const [oneTrust, setOneTrust] = React.useState<OneTrust>({
+  const [oneTrust, setOneTrust] = useState<OneTrust>({
     consent: [Category.StrictlyNecessaryCookies],
     isLoaded: false,
     hasInteracted: false,
   });
 
-  const setInitialConsent = React.useCallback(() => {
+  const setInitialConsent = useCallback(() => {
     setOneTrust((prevOneTrust) => {
       if (prevOneTrust.isLoaded) return prevOneTrust;
 
@@ -76,7 +87,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     });
   }, [onOneTrustLoaded]);
 
-  const optanonWrapper = React.useCallback(() => {
+  const optanonWrapper = useCallback(() => {
     setInitialConsent();
     const OneTrustOnConsentChanged = window?.Optanon?.OnConsentChanged;
     if (OneTrustOnConsentChanged) {
@@ -92,7 +103,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     }
   }, [onConsentChanged, setInitialConsent]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!enabled) return;
 
     /*
@@ -110,7 +121,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
     }
   }, [enabled, optanonWrapper]);
 
-  const value = React.useMemo(() => {
+  const value = useMemo(() => {
     const openPreferenceCenter = () => {
       // eslint-disable-next-line sonarjs/new-cap
       window.OneTrust?.ToggleInfoDisplay();
@@ -132,7 +143,7 @@ const CookieConsentProvider: React.FC<React.PropsWithChildren<Props>> = ({
 };
 
 const useCookieConsent = () => {
-  const context = React.useContext(CookieConsentContext);
+  const context = useContext(CookieConsentContext);
   if (context === undefined) {
     throw new Error(
       'useCookieConsent must be used within a CookieConsentProvider',
