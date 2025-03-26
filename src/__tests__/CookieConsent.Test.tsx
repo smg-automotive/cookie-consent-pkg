@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/naming-convention
-import * as React from 'react';
 import { act, renderHook } from '@testing-library/react';
 
 import { CookieConsentProvider, useCookieConsent } from '../CookieConsent';
