@@ -57,6 +57,6 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "globals": "16.0.0"
+    "globals": "16.1.0"
   }
 }
