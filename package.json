@@ -32,10 +32,10 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "28.0.8",
+    "@rollup/plugin-commonjs": "28.0.9",
     "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-typescript": "12.2.0",
-    "@smg-automotive/eslint-config": "5.2.0",
+    "@rollup/plugin-typescript": "12.3.0",
+    "@smg-automotive/eslint-config": "5.2.2",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
