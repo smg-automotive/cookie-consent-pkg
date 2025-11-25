@@ -35,7 +35,7 @@
     "@rollup/plugin-commonjs": "29.0.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-typescript": "12.3.0",
-    "@smg-automotive/eslint-config": "5.2.4",
+    "@smg-automotive/eslint-config": "5.2.5",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
