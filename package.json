@@ -49,7 +49,7 @@
     "react-dom": "19.2.0",
     "rimraf": "6.1.2",
     "rollup": "4.53.3",
-    "rollup-plugin-dts": "6.2.3",
+    "rollup-plugin-dts": "6.3.0",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "rollup-plugin-preserve-directives": "0.4.0",
     "semantic-release": "25.0.2",
