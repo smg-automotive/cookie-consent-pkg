@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"]
+    },
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -7,7 +10,7 @@
     "jsx": "react-jsx",
     "lib": ["dom", "esnext"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -16,7 +19,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "es2018",
-    "types": ["@testing-library/jest-dom"],
+    "types": ["jest", "node", "@testing-library/jest-dom"],
     "strict": true
   },
   "exclude": ["dist", "node_modules"],
