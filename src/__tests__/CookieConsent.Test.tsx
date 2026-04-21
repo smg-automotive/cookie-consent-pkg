@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { CookieConsentProvider, useCookieConsent } from '../CookieConsent';
-import { Category } from '../category';
+import { CookieConsentProvider, useCookieConsent } from '@/src/CookieConsent';
+import { Category } from '@/src/category';
 
 const wrapper = ({
   enabled,
