@@ -60,6 +60,6 @@
     "typescript": "6.0.2"
   },
   "dependencies": {
-    "globals": "17.5.0"
+    "globals": "17.6.0"
   }
 }
