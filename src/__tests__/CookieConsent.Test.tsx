@@ -12,7 +12,6 @@ const wrapper = ({
   onConsentChanged?: (newConsent: Category[]) => void;
   onOneTrustLoaded?: (consent: Category[], hideBanner: boolean) => void;
 }) => {
-  // eslint-disable-next-line react/display-name
   return ({ children }: { children: React.ReactNode }) => (
     <CookieConsentProvider
       enabled={enabled}
@@ -39,7 +38,6 @@ describe('CookieConsent', () => {
 
   it('sets the initial consent on load', () => {
     window.OnetrustActiveGroups = `${Category.PerformanceCookies},${Category.FunctionalCookies}`;
-    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     window.OptanonWrapper = function () {};
     const { result, rerender } = renderHook(useCookieConsent, {
       wrapper: wrapper({ enabled: true }),
@@ -61,7 +59,6 @@ describe('CookieConsent', () => {
   it('calls onOneTrustLoaded with the initial consent', () => {
     const onOneTrustLoaded = jest.fn();
     window.OnetrustActiveGroups = `${Category.PerformanceCookies},${Category.FunctionalCookies}`;
-    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     window.OptanonWrapper = function () {};
     const { rerender } = renderHook(useCookieConsent, {
       wrapper: wrapper({ enabled: true, onOneTrustLoaded }),
