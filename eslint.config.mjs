@@ -1,6 +1,7 @@
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
 import react from 'eslint-plugin-react';
+import prettier from 'eslint-plugin-prettier/recommended';
 import js from '@eslint/js';
 
 const javascriptFiles = ['**/*.{js,mjs,cjs,jsx,ts,tsx}'];
@@ -50,4 +51,5 @@ export default [
       'react/prop-types': 'off',
     },
   },
+  prettier,
 ];
