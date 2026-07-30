@@ -123,7 +123,6 @@ const CookieConsentProvider: FC<PropsWithChildren<Props>> = ({
 
   const value = useMemo(() => {
     const openPreferenceCenter = () => {
-      // eslint-disable-next-line sonarjs/new-cap
       window.OneTrust?.ToggleInfoDisplay();
     };
 

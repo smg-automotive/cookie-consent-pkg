@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/naming-convention
 import OneTrustCookieConsentBanner from './OneTrustCookieConsentBanner';
 import {
   CookieConsentContext,
