@@ -12,15 +12,21 @@ const wrapper = ({
   onConsentChanged?: (newConsent: Category[]) => void;
   onOneTrustLoaded?: (consent: Category[], hideBanner: boolean) => void;
 }) => {
-  return ({ children }: { children: React.ReactNode }) => (
-    <CookieConsentProvider
-      enabled={enabled}
-      onConsentChanged={onConsentChanged}
-      onOneTrustLoaded={onOneTrustLoaded}
-    >
-      {children}
-    </CookieConsentProvider>
-  );
+  return function CookieConsentTestWrapper({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) {
+    return (
+      <CookieConsentProvider
+        enabled={enabled}
+        onConsentChanged={onConsentChanged}
+        onOneTrustLoaded={onOneTrustLoaded}
+      >
+        {children}
+      </CookieConsentProvider>
+    );
+  };
 };
 
 describe('CookieConsent', () => {
