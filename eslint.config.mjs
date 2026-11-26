@@ -3,9 +3,11 @@ import globals from 'globals';
 import react from 'eslint-plugin-react';
 import prettier from 'eslint-plugin-prettier/recommended';
 import js from '@eslint/js';
+import { fixupPluginRules } from '@eslint/compat';
 
 const javascriptFiles = ['**/*.{js,mjs,cjs,jsx,ts,tsx}'];
 const reactFiles = ['**/*.{jsx,tsx}'];
+const reactPlugins = { react: fixupPluginRules(react) };
 const testFiles = [
   '**/__tests__/**/*.{js,jsx,ts,tsx}',
   '**/*.{spec,test}.{js,jsx,ts,tsx}',
@@ -35,6 +37,7 @@ export default [
   {
     ...react.configs.flat.recommended,
     files: reactFiles,
+    plugins: reactPlugins,
     settings: {
       react: {
         version: 'detect',
@@ -44,6 +47,7 @@ export default [
   {
     ...react.configs.flat['jsx-runtime'],
     files: reactFiles,
+    plugins: reactPlugins,
   },
   {
     files: ['**/*.tsx'],
